@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ardoq — Architecture That Moves as Fast as Your Business</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Inter, Roboto, sans-serif;
+    color: #0b1b2b;
+    line-height: 1.6;
+    background: #fff;
+  }
+  .container { max-width: 1180px; margin: 0 auto; padding: 0 24px; }
+
+  /* Nav */
+  nav {
+    position: sticky; top: 0; z-index: 50;
+    background: rgba(255,255,255,0.95);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid #eef1f5;
+  }
+  .nav-inner {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 18px 24px; max-width: 1180px; margin: 0 auto;
+  }
+  .logo { font-weight: 800; font-size: 22px; letter-spacing: -0.5px; color: #0b1b2b; }
+  .logo span { color: #ff5a3c; }
+  .nav-links { display: flex; gap: 28px; align-items: center; }
+  .nav-links a { color: #445566; text-decoration: none; font-size: 15px; font-weight: 500; }
+  .nav-links a:hover { color: #0b1b2b; }
+  .btn {
+    display: inline-block;
+    padding: 12px 24px;
+    border-radius: 8px;
+    font-weight: 600;
+    text-decoration: none;
+    font-size: 15px;
+    transition: transform 0.15s, box-shadow 0.15s;
+    cursor: pointer;
+    border: none;
+  }
+  .btn-primary {
+    background: #ff5a3c; color: white;
+    box-shadow: 0 4px 14px rgba(255,90,60,0.3);
+  }
+  .btn-primary:hover { transform: translateY(-1px); box-shadow: 0 6px 20px rgba(255,90,60,0.4); }
+  .btn-secondary { background: transparent; color: #0b1b2b; border: 1.5px solid #0b1b2b; }
+  .btn-secondary:hover { background: #0b1b2b; color: white; }
+
+  /* Hero */
+  .hero {
+    padding: 80px 0 100px;
+    background: linear-gradient(135deg, #f7f9fc 0%, #eef3fb 100%);
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: "";
+    position: absolute;
+    top: -100px; right: -100px;
+    width: 500px; height: 500px;
+    background: radial-gradient(circle, rgba(255,90,60,0.08) 0%, transparent 70%);
+  }
+  .hero-grid {
+    display: grid;
+    grid-template-columns: 1.1fr 1fr;
+    gap: 60px;
+    align-items: center;
+    position: relative;
+  }
+  .eyebrow {
+    display: inline-block;
+    background: rgba(255,90,60,0.1);
+    color: #ff5a3c;
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    margin-bottom: 20px;
+  }
+  h1 {
+    font-size: 56px;
+    line-height: 1.1;
+    font-weight: 800;
+    letter-spacing: -1.5px;
+    margin-bottom: 24px;
+    color: #0b1b2b;
+  }
+  h1 .accent { color: #ff5a3c; }
+  .hero p.lead {
+    font-size: 20px;
+    color: #445566;
+    margin-bottom: 36px;
+    max-width: 560px;
+  }
+  .hero-ctas { display: flex; gap: 14px; flex-wrap: wrap; }
+  .hero-meta {
+    margin-top: 36px;
+    font-size: 14px;
+    color: #667788;
+  }
+
+  /* Illustrative graph visual */
+  .graph-visual {
+    background: white;
+    border-radius: 16px;
+    padding: 32px;
+    box-shadow: 0 20px 60px rgba(11,27,43,0.12);
+    position: relative;
+  }
+  .graph-visual svg { width: 100%; height: auto; }
+
+  /* Sections */
+  section { padding: 90px 0; }
+  .section-head { text-align: center; max-width: 780px; margin: 0 auto 60px; }
+  h2 {
+    font-size: 40px;
+    font-weight: 800;
+    letter-spacing: -1px;
+    margin-bottom: 16px;
+    color: #0b1b2b;
+  }
+  .section-head p { font-size: 18px; color: #556677; }
+
+  /* Pain points */
+  .pain { background: #0b1b2b; color: white; }
+  .pain h2 { color: white; }
+  .pain .section-head p { color: #aab8c8; }
+  .pain-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+  }
+  .pain-card {
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.1);
+    padding: 28px;
+    border-radius: 12px;
+  }
+  .pain-card h3 { font-size: 18px; margin-bottom: 10px; color: #ff8b75; }
+  .pain-card p { color: #c3d0de; font-size: 15px; }
+
+  /* Features */
+  .features-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 28px;
+  }
+  .feature-card {
+    padding: 32px;
+    border: 1px solid #eef1f5;
+    border-radius: 14px;
+    transition: transform 0.2s, box-shadow 0.2s;
+    background: #fff;
+  }
+  .feature-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 40px rgba(11,27,43,0.08);
+    border-color: #dbe3ee;
+  }
+  .feature-icon {
+    width: 48px; height: 48px;
+    background: linear-gradient(135deg, #ff5a3c, #ff8b75);
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 18px;
+    color: white;
+    font-weight: 700;
+    font-size: 22px;
+  }
+  .feature-card h3 { font-size: 20px; margin-bottom: 10px; }
+  .feature-card p { color: #556677; font-size: 15px; }
+
+  /* Day in the life */
+  .day { background: #f7f9fc; }
+  .timeline {
+    max-width: 780px;
+    margin: 0 auto;
+    position: relative;
+  }
+  .timeline::before {
+    content: "";
+    position: absolute;
+    left: 80px; top: 0; bottom: 0;
+    width: 2px;
+    background: #dbe3ee;
+  }
+  .t-item {
+    display: grid;
+    grid-template-columns: 80px 1fr;
+    gap: 30px;
+    margin-bottom: 36px;
+    position: relative;
+  }
+  .t-time {
+    font-weight: 700;
+    color: #ff5a3c;
+    padding-top: 2px;
+  }
+  .t-body {
+    background: white;
+    padding: 20px 24px;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(11,27,43,0.04);
+    position: relative;
+  }
+  .t-body::before {
+    content: "";
+    position: absolute;
+    left: -39px; top: 22px;
+    width: 14px; height: 14px;
+    border-radius: 50%;
+    background: #ff5a3c;
+    border: 3px solid white;
+    box-shadow: 0 0 0 2px #dbe3ee;
+  }
+  .t-body strong { display: block; margin-bottom: 4px; color: #0b1b2b; }
+  .t-body span { color: #556677; font-size: 15px; }
+
+  /* Quote */
+  .quote {
+    background: linear-gradient(135deg, #0b1b2b 0%, #15304a 100%);
+    color: white;
+    text-align: center;
+  }
+  .quote blockquote {
+    font-size: 28px;
+    line-height: 1.4;
+    font-weight: 500;
+    max-width: 860px;
+    margin: 0 auto 28px;
+    letter-spacing: -0.3px;
+  }
+  .quote blockquote::before { content: "\201C"; color: #ff5a3c; font-size: 48px; vertical-align: -12px; margin-right: 4px; }
+  .quote blockquote::after { content: "\201D"; color: #ff5a3c; font-size: 48px; vertical-align: -12px; }
+  .attribution { color: #aab8c8; font-size: 15px; }
+  .attribution strong { color: white; display: block; font-size: 17px; margin-bottom: 2px; }
+
+  /* Outcomes */
+  .outcomes-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 24px;
+    text-align: center;
+  }
+  .outcome .stat {
+    font-size: 56px;
+    font-weight: 800;
+    color: #ff5a3c;
+    letter-spacing: -2px;
+    line-height: 1;
+    margin-bottom: 8px;
+  }
+  .outcome p { color: #556677; font-size: 15px; }
+
+  /* CTA */
+  .cta-final {
+    background: linear-gradient(135deg, #ff5a3c 0%, #ff7a5c 100%);
+    color: white;
+    text-align: center;
+  }
+  .cta-final h2 { color: white; }
+  .cta-final p { font-size: 19px; margin-bottom: 32px; max-width: 640px; margin-left: auto; margin-right: auto; }
+  .cta-final .btn {
+    background: white;
+    color: #ff5a3c;
+    padding: 16px 36px;
+    font-size: 16px;
+  }
+  .cta-final .btn:hover { transform: translateY(-2px); box-shadow: 0 10px 30px rgba(0,0,0,0.2); }
+
+  /* Footer */
+  footer {
+    background: #0b1b2b;
+    color: #aab8c8;
+    padding: 40px 0;
+    text-align: center;
+    font-size: 14px;
+  }
+
+  @media (max-width: 860px) {
+    .hero-grid, .features-grid, .pain-grid, .outcomes-grid { grid-template-columns: 1fr; }
+    h1 { font-size: 40px; }
+    h2 { font-size: 30px; }
+    .nav-links a:not(.btn) { display: none; }
+    .timeline::before { left: 8px; }
+    .t-item { grid-template-columns: 1fr; gap: 8px; padding-left: 30px; }
+    .t-body::before { left: -30px; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <div class="logo">ardoq<span>.</span></div>
+    <div class="nav-links">
+      <a href="#pain">Challenges</a>
+      <a href="#features">Platform</a>
+      <a href="#day">A day with Ardoq</a>
+      <a href="#outcomes">Outcomes</a>
+      <a href="#demo" class="btn btn-primary">Book a demo</a>
+    </div>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="container hero-grid">
+    <div>
+      <span class="eyebrow">FOR ENTERPRISE ARCHITECTS</span>
+      <h1>Stop maintaining diagrams. <span class="accent">Start running architecture.</span></h1>
+      <p class="lead">Ardoq is the data-driven platform enterprise architects use to model what is, plan what's next, and connect architecture to the decisions that move the business.</p>
+      <div class="hero-ctas">
+        <a href="#demo" class="btn btn-primary">Book a personalized demo</a>
+        <a href="#features" class="btn btn-secondary">See how it works</a>
+      </div>
+      <p class="hero-meta">Trusted by architecture teams at regulated, global enterprises.</p>
+    </div>
+    <div class="graph-visual">
+      <svg viewBox="0 0 400 320" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="g1" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" stop-color="#ff5a3c"/>
+            <stop offset="100%" stop-color="#ff8b75"/>
+          </linearGradient>
+        </defs>
+        <!-- Connections -->
+        <g stroke="#dbe3ee" stroke-width="1.5" fill="none">
+          <line x1="200" y1="60" x2="100" y2="150"/>
+          <line x1="200" y1="60" x2="300" y2="150"/>
+          <line x1="200" y1="60" x2="200" y2="160"/>
+          <line x1="100" y1="150" x2="60" y2="250"/>
+          <line x1="100" y1="150" x2="160" y2="250"/>
+          <line x1="200" y1="160" x2="160" y2="250"/>
+          <line x1="200" y1="160" x2="240" y2="250"/>
+          <line x1="300" y1="150" x2="240" y2="250"/>
+          <line x1="300" y1="150" x2="340" y2="250"/>
+        </g>
+        <!-- Root node -->
+        <circle cx="200" cy="60" r="26" fill="url(#g1)"/>
+        <text x="200" y="64" text-anchor="middle" fill="white" font-size="11" font-weight="700">Strategy</text>
+        <!-- Mid nodes -->
+        <circle cx="100" cy="150" r="22" fill="#0b1b2b"/>
+        <text x="100" y="154" text-anchor="middle" fill="white" font-size="10" font-weight="600">Capability</text>
+        <circle cx="200" cy="160" r="22" fill="#0b1b2b"/>
+        <text x="200" y="164" text-anchor="middle" fill="white" font-size="10" font-weight="600">Apps</text>
+        <circle cx="300" cy="150" r="22" fill="#0b1b2b"/>
+        <text x="300" y="154" text-anchor="middle" fill="white" font-size="10" font-weight="600">Data</text>
+        <!-- Leaf nodes -->
+        <circle cx="60" cy="250" r="16" fill="#eef3fb" stroke="#0b1b2b" stroke-width="1.5"/>
+        <circle cx="160" cy="250" r="16" fill="#eef3fb" stroke="#0b1b2b" stroke-width="1.5"/>
+        <circle cx="240" cy="250" r="16" fill="#eef3fb" stroke="#0b1b2b" stroke-width="1.5"/>
+        <circle cx="340" cy="250" r="16" fill="#eef3fb" stroke="#0b1b2b" stroke-width="1.5"/>
+      </svg>
+      <p style="text-align:center; color:#667788; font-size:13px; margin-top:16px;">A living graph of your enterprise — strategy to systems, in one model.</p>
+    </div>
+  </div>
+</section>
+
+<section class="pain" id="pain">
+  <div class="container">
+    <div class="section-head">
+      <h2>You know this story too well.</h2>
+      <p>Enterprise architects weren't hired to be data janitors. But traditional tools keep making you one.</p>
+    </div>
+    <div class="pain-grid">
+      <div class="pain-card">
+        <h3>Documentation rot</h3>
+        <p>Visio, PowerPoint, and legacy repositories go stale the moment you save them. No one trusts the model.</p>
+      </div>
+      <div class="pain-card">
+        <h3>Data silos everywhere</h3>
+        <p>Truth is scattered across the CMDB, spreadsheets, SharePoint, and your architects' heads.</p>
+      </div>
+      <div class="pain-card">
+        <h3>Zero business engagement</h3>
+        <p>Application owners and product managers won't open heavy modeling tools. The model stays inside EA.</p>
+      </div>
+      <div class="pain-card">
+        <h3>Rigid metamodels</h3>
+        <p>Legacy tools force your organization into their worldview. Changing the model takes a six-week project.</p>
+      </div>
+      <div class="pain-card">
+        <h3>Invisible ROI</h3>
+        <p>You can't tie EA effort to outcomes the C-suite cares about — cost, risk, resilience, speed.</p>
+      </div>
+      <div class="pain-card">
+        <h3>Manual upkeep</h3>
+        <p>Your team spends more time maintaining the model than generating insight from it.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="features">
+  <div class="container">
+    <div class="section-head">
+      <h2>A platform built the way architects actually think.</h2>
+      <p>Graph-based. Metamodel-flexible. Collaborative by design. Integrated by default.</p>
+    </div>
+    <div class="features-grid">
+      <div class="feature-card">
+        <div class="feature-icon">\u25C8</div>
+        <h3>A flexible metamodel you control</h3>
+        <p>Model your enterprise your way. Add entity types, redefine relationships, and evolve the metamodel as your business changes — without a consultant.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">\u25CE</div>
+        <h3>Graph foundation, not spreadsheets</h3>
+        <p>Relationships are the architecture. Ardoq's graph engine makes dependencies, impact, and roadmaps queryable from day one.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">\u21BB</div>
+        <h3>Live integrations with your stack</h3>
+        <p>Connect ServiceNow, CMDBs, cloud providers, HRIS, and APM tools. Your model reflects reality — automatically.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">\u25A9</div>
+        <h3>Surveys & Broadcasts</h3>
+        <p>Business users will complete a 5-minute survey. They'll never open a modeling canvas. Crowdsource truth from the people closest to it.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">\u25A6</div>
+        <h3>Dynamic dashboards for every audience</h3>
+        <p>Capability heatmaps for the CIO. Risk views for the CISO. Roadmaps for portfolio. All generated from the same live model.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">\u21AA</div>
+        <h3>Scenario planning & roadmapping</h3>
+        <p>Compare current, target, and transition states. Run "what-if" on cloud moves, M&A integrations, and rationalization programs.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="day" id="day">
+  <div class="container">
+    <div class="section-head">
+      <h2>A day with Ardoq.</h2>
+      <p>Less documentation. More decisions. Here's what Tuesday looks like.</p>
+    </div>
+    <div class="timeline">
+      <div class="t-item">
+        <div class="t-time">08:30</div>
+        <div class="t-body"><strong>Data quality at a glance</strong><span>Review overnight integration alerts. Assign an application owner to confirm a lifecycle change — all in one click.</span></div>
+      </div>
+      <div class="t-item">
+        <div class="t-time">09:30</div>
+        <div class="t-body"><strong>Heatmap for the CIO</strong><span>Generate a capability view showing tech-debt concentration in the claims domain. Ready for the board meeting.</span></div>
+      </div>
+      <div class="t-item">
+        <div class="t-time">11:00</div>
+        <div class="t-body"><strong>Cloud migration working session</strong><span>Use live dependency views to sequence the next wave of application moves with confidence.</span></div>
+      </div>
+      <div class="t-item">
+        <div class="t-time">13:30</div>
+        <div class="t-body"><strong>New regulation, new entity type</strong><span>Extend the metamodel to add "AI System" for the EU AI Act. Publish a survey to application owners. No consultant required.</span></div>
+      </div>
+      <div class="t-item">
+        <div class="t-time">15:00</div>
+        <div class="t-body"><strong>Architecture Review Board</strong><span>Walk two proposed designs through reference architectures. Decisions recorded directly in the model.</span></div>
+      </div>
+      <div class="t-item">
+        <div class="t-time">16:30</div>
+        <div class="t-body"><strong>Coaching & audit-ready</strong><span>Mentor a junior architect on modeling a data flow for a regulatory audit — with full lineage captured automatically.</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="quote">
+  <div class="container">
+    <blockquote>Ardoq turned our architecture practice from a documentation function into a decision-making capability. The model is finally alive — and the business is finally using it.</blockquote>
+    <div class="attribution">
+      <strong>Elena Vasquez</strong>
+      Principal Enterprise Architect, Global Financial Services
+    </div>
+  </div>
+</section>
+
+<section id="outcomes">
+  <div class="container">
+    <div class="section-head">
+      <h2>What changes when architecture is live.</h2>
+      <p>Outcomes our customers report after rolling out Ardoq across their EA practice.</p>
+    </div>
+    <div class="outcomes-grid">
+      <div class="outcome"><div class="stat">70%</div><p>Less time maintaining the model</p></div>
+      <div class="outcome"><div class="stat">3x</div><p>Faster architecture reviews</p></div>
+      <div class="outcome"><div class="stat">10x</div><p>More business contributors to the model</p></div>
+      <div class="outcome"><div class="stat">$M</div><p>Savings identified through rationalization</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="cta-final" id="demo">
+  <div class="container">
+    <h2>See your enterprise as a living graph.</h2>
+    <p>Book a 30-minute demo tailored to your metamodel, your integrations, and the decisions your C-suite is asking you to support.</p>
+    <a href="mailto:hello@ardoq.com" class="btn">Book a personalized demo</a>
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    &copy; 2026 Ardoq &middot; Architecture for the way enterprises actually work.
+  </div>
+</footer>
+
+</body>
+</html>
